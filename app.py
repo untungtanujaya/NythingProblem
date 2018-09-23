@@ -1,21 +1,27 @@
 # Name : app.py
 # Desc : read the txt file (fileInput), then make object nything.
 
+import random
+
 class nything:
     'class nything is a class that solve NythingProblem from fileInput'
     # attribute
-    nWhiteKnight = 0
-    nWhiteBishop = 0
-    nWhiteRook = 0
-    nWhiteQueen = 0
-    nBlackKnight = 0
-    nBlackBishop = 0
-    nBlackRook = 0
-    nBlackQueen = 0
+    nNything = 0
 
     # method
     def __init__(self, fileInput):
         # put information in fileInput (in .txt) to attribute
+
+        # init chess pieces counter and array of chess pieces
+        self.nWhiteKnight = 0
+        self.nWhiteBishop = 0
+        self.nWhiteRook = 0
+        self.nWhiteQueen = 0
+        self.nBlackKnight = 0
+        self.nBlackBishop = 0
+        self.nBlackRook = 0
+        self.nBlackQueen = 0
+        self.chessPieces = []
 
         # read fileInput
         f = open("test/" + fileInput + ".txt", "r")
@@ -29,49 +35,41 @@ class nything:
             if words[0] == "WHITE":
                 if words[1] == "KNIGHT":
                     self.nWhiteKnight = int(words[2])
+                    for i in range(self.nWhiteKnight):
+                        self.chessPieces += "K"
                 elif words[1] == "BISHOP":
                     self.nWhiteBishop = int(words[2])
+                    for i in range(self.nWhiteBishop):
+                        self.chessPieces += "B"
                 elif words[1] == "ROOK":
                     self.nWhiteRook = int(words[2])
+                    for i in range(self.nWhiteRook):
+                        self.chessPieces += "R"
                 elif words[1] == "QUEEN":
                     self.nWhiteQueen = int(words[2])
+                    for i in range(self.nWhiteQueen):
+                        self.chessPieces += "Q"
             elif words[0] == "BLACK":
                 if words[1] == "KNIGHT":
                     self.nBlackKnight = int(words[2])
+                    for i in range(self.nBlackKnight):
+                        self.chessPieces += "k"
                 elif words[1] == "BISHOP":
                     self.nBlackBishop = int(words[2])
+                    for i in range(self.nBlackBishop):
+                        self.chessPieces += "b"
                 elif words[1] == "ROOK":
                     self.nBlackRook = int(words[2])
+                    for i in range(self.nBlackRook):
+                        self.chessPieces += "r"
                 elif words[1] == "QUEEN":
                     self.nBlackQueen = int(words[2])
+                    for i in range(self.nBlackQueen):
+                        self.chessPieces += "q"
             # if it is not white nor black, it is ignored
 
-    def solve(self):
-        print("1. hillClimbing")
-        print("2. simulatedAnnealing")
-        print("3. geneticAlgorithm")
-        x = int(input("Which algorithm do you want to choose? "))
-        while (x < 1) or (x > 3):
-            print("input = 1, 2, 3")
-            x = int(input("Which algorithm do you want to choose? "))
-        if x == 1:
-            self.hillClimbing()
-        elif x == 2:
-            self.simulatedAnnealing()
-        else:
-            self.geneticAlgorithm()
-
-    def hillClimbing(self):
-        # solve using hillClimbing
-        print(1)
-
-    def simulatedAnnealing(self):
-        # solve using simulatedAnnealing
-        print(2)
-
-    def geneticAlgorithm(self):
-        # solve using geneticAlgorithm
-        print(3)
+        # add object counter
+        nything.nNything += 1
 
     def printAttr(self):
         # print attribute
@@ -83,33 +81,104 @@ class nything:
         print("nBlackBishop : " + str(self.nBlackBishop))
         print("nBlackRook : " + str(self.nBlackRook))
         print("nBlackQueen : " + str(self.nBlackQueen))
+        print(self.chessPieces)
+        for row in self.chessBoard:
+            print(row)
 
-fileInput = input(str("Which file you want to open? "))
-nyth = nything(fileInput)
-nyth.printAttr()
-nyth.solve()
+    def randomize(self):
+        # randomize chess pieces in matrix based on attributes
+
+        # init chess' locator
+        self.chessLocator = []
+
+        # init chess board
+        self.chessBoard = [
+            [".",".",".",".",".",".",".","."],
+            [".",".",".",".",".",".",".","."],
+            [".",".",".",".",".",".",".","."],
+            [".",".",".",".",".",".",".","."],
+            [".",".",".",".",".",".",".","."],
+            [".",".",".",".",".",".",".","."],
+            [".",".",".",".",".",".",".","."],
+            [".",".",".",".",".",".",".","."]
+        ]
+
+        # put chess piece to board
+        for piece in self.chessPieces:
+            r = random.randint(0,7) # index 0 - 7
+            c = random.randint(0,7)
+            self.chessBoard[r][c] = piece
+            self.chessLocator.append((piece, r, c))
+
+    def changePiece(piece1, piece2):
+        # change piece at chessBoard
+        # piece1 and piece2 are tuple of piece, row index, and column index
+        x, r1, c1 = piece1
+        y, r2, c2 = piece2
+        # x and y are unused
+
+        # move piece on board
+        temp = self.chessBoard[r1][c1]
+        self.chessBoard[r1][c1] = self.chessBoard[r2][c2]
+        self.chessBoard[r2][c2] = temp
+
+    def hillClimbing(self):
+        # solve using hillClimbing, return local maximum (make another attribute called res)
+        for el in self.chessLocator:
+            # start hill climbing
+            current = el
+            found = False
+            while not found:
+                neighbor = findHighestValueSucc(current)
+                if hValue(neighbor) <= hValue(current):
+                    found = True
+                changePiece(current,neighbor)
+                # change locator
+                current = neighbor
+                del neighbor
+
+    def hValue(piece):
+        # return height value of x position
+        return 0
+
+    def findHighestValueSucc(piece):
+        # find highest h value of neighbors
+        # return position of neighbors (piece are dot ('.'))
+        return ('.', 0, 0)
 
 
+    def simulatedAnnealing(self):
+        # solve using simulatedAnnealing
+        print(2)
 
-# class Employee:
-#     'Common base class for all employees'
-#     empCount = 0
-#
-#     def __init__(self, name, salary):
-#         self.name = name
-#         self.salary = salary
-#         Employee.empCount += 1
-#
-#     def displayCount(self):
-#         print ("Total Employee %d" % Employee.empCount)
-#
-#     def displayEmployee(self):
-#         print ("Name : ", self.name,  ", Salary: ", self.salary)
-#
-# #This would create first object of Employee class"
-# emp1 = Employee("Zara", 2000)
-# #This would create second object of Employee class"
-# emp2 = Employee("Manni", 5000)
-# emp1.displayEmployee()
-# emp2.displayEmployee()
-# print ("Total Employee %d" % Employee.empCount)
+    def geneticAlgorithm(self):
+        # solve using geneticAlgorithm
+        print(3)
+
+# main
+def main():
+    # read fileInput
+    fileInput = input(str("Which file you want to open? "))
+    nyth = nything(fileInput)
+
+    # set matrix
+    nyth.randomize()
+    nyth.printAttr()
+
+    # solve nyth
+    print("1. hillClimbing")
+    print("2. simulatedAnnealing")
+    print("3. geneticAlgorithm")
+    x = int(input("Which algorithm do you want to choose? "))
+    while (x < 1) or (x > 3):
+        print("input = 1, 2, 3")
+        x = int(input("Which algorithm do you want to choose? "))
+    if x == 1:
+        nyth.hillClimbing()
+    elif x == 2:
+        nyth.simulatedAnnealing()
+    else:
+        nyth.geneticAlgorithm()
+
+if __name__ == '__main__':
+    main()
