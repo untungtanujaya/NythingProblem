@@ -110,7 +110,7 @@ class nything:
             self.chessBoard[r][c] = piece
             self.chessLocator.append((piece, r, c))
 
-    def changePiece(piece1, piece2):
+    def changePiece(self, piece1, piece2):
         # change piece at chessBoard
         # piece1 and piece2 are tuple of piece, row index, and column index
         x, r1, c1 = piece1
@@ -129,23 +129,21 @@ class nything:
             current = el
             found = False
             while not found:
-                neighbor = findHighestValueSucc(current)
-                if hValue(neighbor) <= hValue(current):
+                neighbor = self.findHighestValueSucc(current)
+                if self.hValue(neighbor) <= self.hValue(current):
                     found = True
-                changePiece(current,neighbor)
+                self.changePiece(current,neighbor)
                 # change locator
-                current = neighbor
-                del neighbor
+                current = neighbors
 
-    def hValue(piece):
+    def hValue(self, piece):
         # return height value of x position
         return 0
 
-    def findHighestValueSucc(piece):
+    def findHighestValueSucc(self, piece):
         # find highest h value of neighbors
         # return position of neighbors (piece are dot ('.'))
         return ('.', 0, 0)
-
 
     def simulatedAnnealing(self):
         # solve using simulatedAnnealing
@@ -179,6 +177,10 @@ def main():
         nyth.simulatedAnnealing()
     else:
         nyth.geneticAlgorithm()
+
+    # show chessBoard
+    for row in nyth.chessBoard:
+        print(row)
 
 if __name__ == '__main__':
     main()
