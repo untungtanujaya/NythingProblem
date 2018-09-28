@@ -3,6 +3,21 @@
 
 import random
 
+def checkKnight(x1,y1,x2,y2):
+    if ((x2 == x1 + 2) and ((y2 == y1 -1) or (y2 == y1 + 1))) or (x2 == x1 - 2 and ((y2 == y1 - 1) or (y2 == y1 + 1))) or ((y2 == y1 + 2) and ((x2 == x1 -1) or (x2 == x1 + 1))) or ((y2 == y1 - 2) and ((x2 == x1 - 1) or (x2 == x1 + 1))):
+    		return True
+
+def checkBishop(x1,y1,x2,y2):
+	if (abs(x2-x1) == abs(y2-y1)):
+		return True
+
+def checkRook(x1,y1,x2,y2):
+	if (x1 == x2) or (y1 == y2):
+		return True
+
+def checkQueen(x1,y1,x2,y2):
+	return (checkRook(x1,y1,x2,y2) or checkBishop(x1,y1,x2,y2))
+
 class nything:
     'class nything is a class that solve NythingProblem from fileInput'
     # attribute
@@ -82,8 +97,10 @@ class nything:
         print("nBlackRook : " + str(self.nBlackRook))
         print("nBlackQueen : " + str(self.nBlackQueen))
         print(self.chessPieces)
-        for row in self.chessBoard:
-            print(row)
+        for i in range(8):
+            for j in range(8):
+                print(self.chessBoard[i][j], end=' ')
+            print()
 
     def randomize(self):
         # randomize chess pieces in matrix based on attributes
@@ -149,9 +166,63 @@ class nything:
         # solve using simulatedAnnealing
         print(2)
 
+  
+    def countTarget(n):
+    	return (n*(n-1))/2
+
+    def notAttackingPieces(self):
+    	ff = 0
+    	for idx,piece in enumerate(self.chessLocator):
+    		for idx2,piece2 in enumerate(self.chessLocator):
+    			if idx < idx2:
+    				if ((piece[0] == "k") or (piece[0] == "K")) and ((piece2[0] == "b") or (piece2[0] == "B")):
+    					if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])) and not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
+    						ff += 1
+    				elif ((piece[0] == "k") or (piece[0] == "K")) and ((piece2[0] == "r") or (piece2[0] == "R")):
+    					if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])) and not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
+    						ff += 1
+    				elif ((piece[0] == "k") or (piece[0] == "K")) and ((piece2[0] == "q") or (piece2[0] == "Q")):
+    					if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])) and not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])):
+    						ff += 1
+    				elif ((piece[0] == "b") or (piece[0] == "B")) and ((piece2[0] == "k") or (piece2[0] == "K")) :
+    					if not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])) and not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])):
+    						ff += 1
+    				elif ((piece[0] == "b") or (piece[0] == "B")) and ((piece2[0] == "r") or (piece2[0] == "R")) :
+    					if not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])) and not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
+    						ff += 1
+    				elif ((piece[0] == "b") or (piece[0] == "B")) and ((piece2[0] == "q") or (piece2[0] == "Q")) :
+    					if not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])) and not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])):
+    						ff += 1
+    				elif ((piece[0] == "r") or (piece[0] == "R")) and ((piece2[0] == "k") or (piece2[0] == "K")):
+    					if not(checkRook(piece[1],piece[2],piece2[1],piece2[2])) and not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])):
+    						ff += 1
+    				elif ((piece[0] == "r") or (piece[0] == "R")) and ((piece2[0] == "b") or (piece2[0] == "B")):
+    					if not(checkRook(piece[1],piece[2],piece2[1],piece2[2])) and not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
+    						ff += 1
+    				elif ((piece[0] == "r") or (piece[0] == "R")) and ((piece2[0] == "q") or (piece2[0] == "Q")):
+    					if not(checkRook(piece[1],piece[2],piece2[1],piece2[2])) and not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])):
+    						ff += 1
+    				elif ((piece[0] == "q") or (piece[0] == "Q")) and ((piece2[0] == "k") or (piece2[0] == "K")):
+    					if not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])) and not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])):
+    						ff += 1
+    				elif ((piece[0] == "q") or (piece[0] == "Q")) and ((piece2[0] == "b") or (piece2[0] == "B")):
+    					if not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])) and not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
+    						ff += 1
+    				elif ((piece[0] == "q") or (piece[0] == "Q")) and ((piece2[0] == "r") or (piece2[0] == "R")):
+    					if not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])) and not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
+    						ff += 1
+    	return ff
+
+    def selectedParent(population):
+    	return
+    	
+
     def geneticAlgorithm(self):
         # solve using geneticAlgorithm
-        print(3)
+      	print(3)
+
+def generatePopulation():
+   	return
 
 # main
 def main():
