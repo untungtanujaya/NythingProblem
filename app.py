@@ -151,6 +151,46 @@ class nything:
         # solve using simulatedAnnealing
         print(2)
 
+    def checkKnight(x1,y1,x2,y2):
+    	if ((x2 == x1 + 2) and ((y2 == y1 -1) or (y2 == y1 + 1))) or (x2 == x1 - 2 and ((y2 == y1 - 1) or (y2 == y1 + 1))) or ((y2 == y1 + 2) and ((x2 == x1 -1) or (x2 == x1 + 1))) or ((y2 == y1 - 2) and ((x2 == x1 - 1) or (x2 == x1 + 1))):
+    		return True
+
+    def checkBishop(x1,y1,x2,y2):
+    	if (abs(x2-x1) == abs(y2-y1)):
+    		return True;
+
+
+
+    def countTarget(n):
+    	return (n*(n-1))/2
+
+    def fitnessFunction(self):
+    	ff = 0
+    	for idx,piece in enumerate(self.chessLocator):
+    		for idx2,piece2 in enumerate(self.chessLocator):
+    			if idx < idx2:
+    				if (piece[0] == "k") or (piece[0] == "K") :
+    					if checkKnight(piece[1],piece[2],piece2[1],piece2[2]):
+    						ff += 1
+    				elif (piece[0] == "b") or piece[0] == "B":
+    					if checkBishop(piece[1],piece[2],piece2[1],piece2[2]):
+    						ff += 1
+    				elif (piece[0] == "r") or piece[0] == "R":
+    					if checkRook(piece[1],piece[2],piece2[1],piece2[2]):
+    						ff += 1
+    				elif (piece[0] == "q") or piece[0] == "Q":
+    					if checkQueen(piece[1],piece[2],piece2[1],piece2[2]):
+    						ff += 1
+
+
+    def generatePopulation(self):
+    	return
+
+
+    def selectedParent(population):
+    	return
+    	
+
     def geneticAlgorithm(self):
         # solve using geneticAlgorithm
         print(3)
