@@ -172,7 +172,7 @@ class nything:
     def countTarget(n):
     	return (n*(n-1))/2
 
-    def fitnessFunction(self):
+    def notAttackingPieces(self):
     	ff = 0
     	for idx,piece in enumerate(self.chessLocator):
     		for idx2,piece2 in enumerate(self.chessLocator):
@@ -221,7 +221,7 @@ class nything:
 
     def geneticAlgorithm(self):
         # solve using geneticAlgorithm
-      	print(self.fitnessFunction())
+      	print(3)
 
 def generatePopulation():
    	return
