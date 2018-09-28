@@ -82,8 +82,10 @@ class nything:
         print("nBlackRook : " + str(self.nBlackRook))
         print("nBlackQueen : " + str(self.nBlackQueen))
         print(self.chessPieces)
-        for row in self.chessBoard:
-            print(row)
+        for i in range(8):
+            for j in range(8):
+                print(self.chessBoard[i][j], end=' ')
+            print()
 
     def randomize(self):
         # randomize chess pieces in matrix based on attributes
@@ -182,11 +184,6 @@ class nything:
     					if checkQueen(piece[1],piece[2],piece2[1],piece2[2]):
     						ff += 1
 
-
-    def generatePopulation(self):
-    	return
-
-
     def selectedParent(population):
     	return
     	
@@ -194,6 +191,9 @@ class nything:
     def geneticAlgorithm(self):
         # solve using geneticAlgorithm
         print(3)
+
+def generatePopulation():
+   	return
 
 # main
 def main():
