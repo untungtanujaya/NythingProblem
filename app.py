@@ -166,27 +166,26 @@ class nything:
         # solve using simulatedAnnealing
         print(2)
 
-  
-    def countTarget(n):
-    	return (n*(n-1))/2
-
     def geneticAlgorithm(self):
         # solve using geneticAlgorithm
-        print(notAttackingPieces(self.chessLocator))
         population = generatePopulation(self,4)
-        best3Parents = selectedParent(population)
-        print("best3Parents:")
-        for x in best3Parents:
-            print(x)
-        population = crossOver (best3Parents, len(self.chessLocator))
-        print("crossover:")
-        for x in population:
-            print(x)
-        mutation(population[0], len(self.chessLocator))
-        print("mutation:")
-        for x in population:
-            print(x)
-
+        done = False
+        result = []
+        while not(done):
+        	best3Parents = selectedParent(population)
+        	childs = crossOver(best3Parents,len(self.chessLocator))
+        	for child in childs:
+        		mutation(child,len(self.chessLocator))
+        	population = childs
+        	for child in childs:
+        		if (notAttackingPieces(child) == countTarget(len(self.chessLocator))):
+        			result = child
+        			done = True
+        			break
+       	print(result)
+       
+def countTarget(n):
+    	return int((n*(n-1))/2)
 
 def notAttackingPieces(chessLocator):
     ff = 0
@@ -321,9 +320,9 @@ def main():
     else:
         nyth.geneticAlgorithm()
 
-    # show chessBoard
-    for row in nyth.chessBoard:
-        print(row)
+    # # show chessBoard
+    # for row in nyth.chessBoard:
+    #     print(row)
 
 if __name__ == '__main__':
     main()
