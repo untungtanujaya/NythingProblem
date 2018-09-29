@@ -102,6 +102,27 @@ class nything:
                 print(self.chessBoard[i][j], end=' ')
             print()
 
+    def setChessBoard(self, input):
+        # init chess' locator
+        self.chessLocator = []
+        # init chess board
+        self.chessBoard = [
+            [".",".",".",".",".",".",".","."],
+            [".",".",".",".",".",".",".","."],
+            [".",".",".",".",".",".",".","."],
+            [".",".",".",".",".",".",".","."],
+            [".",".",".",".",".",".",".","."],
+            [".",".",".",".",".",".",".","."],
+            [".",".",".",".",".",".",".","."],
+            [".",".",".",".",".",".",".","."]
+        ]        
+        for i in range(len(input)):
+            piece = input[i][0]
+            r = input[i][1]
+            c = input[i][2]
+            self.chessBoard[r][c] = piece
+            self.chessLocator.append((piece, r, c))
+
     def randomize(self):
         # randomize chess pieces in matrix based on attributes
 
@@ -182,7 +203,13 @@ class nything:
         			result = child
         			done = True
         			break
-       	print(result)
+        print(result)
+       	self.setChessBoard(result)
+        for i in range(8):
+            for j in range(8):
+                print(self.chessBoard[i][j], end=' ')
+            print()
+
        
 def countTarget(n):
     	return int((n*(n-1))/2)
