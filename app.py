@@ -102,6 +102,7 @@ class nything:
                 print(self.chessBoard[i][j], end=' ')
             print()
 
+
     def randomize(self):
         # randomize chess pieces in matrix based on attributes
 
@@ -175,10 +176,18 @@ class nything:
         print(notAttackingPieces(self.chessLocator))
         population = generatePopulation(self,4)
         best3Parents = selectedParent(population)
+        print("best3Parents:")
         for x in best3Parents:
             print(x)
-        for x in crossOver (best3Parents, len(self.chessLocator)):
+        population = crossOver (best3Parents, len(self.chessLocator))
+        print("crossover:")
+        for x in population:
             print(x)
+        mutation(population[0], len(self.chessLocator))
+        print("mutation:")
+        for x in population:
+            print(x)
+
 
 def notAttackingPieces(chessLocator):
     ff = 0
@@ -250,7 +259,6 @@ def crossOver(population, totalPieces):
     child4 = []
 
     separator1 = random.randint(0, totalPieces-1)
-    print ("separator 1 = ",separator1)
     for i in range(0,separator1):
         child1.append (population[0][i])
         child2.append (population[1][i])
@@ -259,7 +267,6 @@ def crossOver(population, totalPieces):
         child2.append (population[0][i])
 
     separator2 = random.randint(0, totalPieces-1)
-    print ("separator 2 = ",separator2)
     for i in range(0,separator2):
         child3.append (population[1][i])
         child4.append (population[2][i])
@@ -268,6 +275,25 @@ def crossOver(population, totalPieces):
         child4.append (population[1][i])
 
     return [child1, child2, child3, child4]
+
+def mutation(chessLocator, totalPieces):
+    idx = random.randint (0, totalPieces-1)
+    while True:
+        r = random.randint(0, 7)
+        c = random.randint(0, 7)
+        unique = True       #check if the mutation new position != other pieces position
+        i = 0
+        while (i<totalPieces) and (unique):
+            if (r == chessLocator[i][1]) and (c == chessLocator[i][2]):
+                unique = False
+            else:
+                i+=1
+        if (unique):
+            break
+    temp = list(chessLocator[idx])
+    temp[1] = r
+    temp[2] = c
+    chessLocator[idx] = tuple(temp)
 
 
 
