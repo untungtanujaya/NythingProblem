@@ -4,8 +4,7 @@
 import random
 
 def checkKnight(x1,y1,x2,y2):
-    	
-    	if ((x2 == x1 + 2) and ((y2 == y1 -1) or (y2 == y1 + 1))) or (x2 == x1 - 2 and ((y2 == y1 - 1) or (y2 == y1 + 1))) or ((y2 == y1 + 2) and ((x2 == x1 -1) or (x2 == x1 + 1))) or ((y2 == y1 - 2) and ((x2 == x1 - 1) or (x2 == x1 + 1))):
+    if ((x2 == x1 + 2) and ((y2 == y1 -1) or (y2 == y1 + 1))) or (x2 == x1 - 2 and ((y2 == y1 - 1) or (y2 == y1 + 1))) or ((y2 == y1 + 2) and ((x2 == x1 -1) or (x2 == x1 + 1))) or ((y2 == y1 - 2) and ((x2 == x1 - 1) or (x2 == x1 + 1))):
     		return True
 
 def checkBishop(x1,y1,x2,y2):
@@ -128,7 +127,7 @@ class nything:
             self.chessBoard[r][c] = piece
             self.chessLocator.append((piece, r, c))
 
-    def changePiece(piece1, piece2):
+    def changePiece(self, piece1, piece2):
         # change piece at chessBoard
         # piece1 and piece2 are tuple of piece, row index, and column index
         x, r1, c1 = piece1
@@ -147,23 +146,21 @@ class nything:
             current = el
             found = False
             while not found:
-                neighbor = findHighestValueSucc(current)
-                if hValue(neighbor) <= hValue(current):
+                neighbor = self.findHighestValueSucc(current)
+                if self.hValue(neighbor) <= self.hValue(current):
                     found = True
-                changePiece(current,neighbor)
+                self.changePiece(current,neighbor)
                 # change locator
-                current = neighbor
-                del neighbor
+                current = neighbors
 
-    def hValue(piece):
+    def hValue(self, piece):
         # return height value of x position
         return 0
 
-    def findHighestValueSucc(piece):
+    def findHighestValueSucc(self, piece):
         # find highest h value of neighbors
         # return position of neighbors (piece are dot ('.'))
         return ('.', 0, 0)
-
 
     def simulatedAnnealing(self):
         # solve using simulatedAnnealing
@@ -175,7 +172,7 @@ class nything:
 
     def geneticAlgorithm(self):
         # solve using geneticAlgorithm
-        print(fitnessFunction(self.chessLocator))
+        print(notAttackingPieces(self.chessLocator))
         population = generatePopulation(self,4)
         best3Parents = selectedParent(population)
         for x in best3Parents:
@@ -183,48 +180,48 @@ class nything:
         for x in crossOver (best3Parents, len(self.chessLocator)):
             print(x)
 
-def fitnessFunction(chessLocator):
-    	ff = 0
-    	for idx,piece in enumerate(chessLocator):
-    		for idx2,piece2 in enumerate(chessLocator):
-    			if idx < idx2:
-    				if ((piece[0] == "k") or (piece[0] == "K")) and ((piece2[0] == "b") or (piece2[0] == "B")):
-    					if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])) and not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
-    						ff += 1
-    				elif ((piece[0] == "k") or (piece[0] == "K")) and ((piece2[0] == "r") or (piece2[0] == "R")):
-    					if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])) and not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
-    						ff += 1
-    				elif ((piece[0] == "k") or (piece[0] == "K")) and ((piece2[0] == "q") or (piece2[0] == "Q")):
-    					if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])) and not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])):
-    						ff += 1
-    				elif ((piece[0] == "b") or (piece[0] == "B")) and ((piece2[0] == "k") or (piece2[0] == "K")) :
-    					if not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])) and not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])):
-    						ff += 1
-    				elif ((piece[0] == "b") or (piece[0] == "B")) and ((piece2[0] == "r") or (piece2[0] == "R")) :
-    					if not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])) and not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
-    						ff += 1
-    				elif ((piece[0] == "b") or (piece[0] == "B")) and ((piece2[0] == "q") or (piece2[0] == "Q")) :
-    					if not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])) and not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])):
-    						ff += 1
-    				elif ((piece[0] == "r") or (piece[0] == "R")) and ((piece2[0] == "k") or (piece2[0] == "K")):
-    					if not(checkRook(piece[1],piece[2],piece2[1],piece2[2])) and not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])):
-    						ff += 1
-    				elif ((piece[0] == "r") or (piece[0] == "R")) and ((piece2[0] == "b") or (piece2[0] == "B")):
-    					if not(checkRook(piece[1],piece[2],piece2[1],piece2[2])) and not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
-    						ff += 1
-    				elif ((piece[0] == "r") or (piece[0] == "R")) and ((piece2[0] == "q") or (piece2[0] == "Q")):
-    					if not(checkRook(piece[1],piece[2],piece2[1],piece2[2])) and not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])):
-    						ff += 1
-    				elif ((piece[0] == "q") or (piece[0] == "Q")) and ((piece2[0] == "k") or (piece2[0] == "K")):
-    					if not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])) and not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])):
-    						ff += 1
-    				elif ((piece[0] == "q") or (piece[0] == "Q")) and ((piece2[0] == "b") or (piece2[0] == "B")):
-    					if not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])) and not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
-    						ff += 1
-    				elif ((piece[0] == "q") or (piece[0] == "Q")) and ((piece2[0] == "r") or (piece2[0] == "R")):
-    					if not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])) and not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
-    						ff += 1
-    	return ff    
+def notAttackingPieces(chessLocator):
+    ff = 0
+    for idx,piece in enumerate(chessLocator):
+        for idx2,piece2 in enumerate(chessLocator):
+            if idx < idx2:
+                if ((piece[0] == "k") or (piece[0] == "K")) and ((piece2[0] == "b") or (piece2[0] == "B")):
+                    if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])) and not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif ((piece[0] == "k") or (piece[0] == "K")) and ((piece2[0] == "r") or (piece2[0] == "R")):
+                    if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])) and not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif ((piece[0] == "k") or (piece[0] == "K")) and ((piece2[0] == "q") or (piece2[0] == "Q")):
+                    if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])) and not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif ((piece[0] == "b") or (piece[0] == "B")) and ((piece2[0] == "k") or (piece2[0] == "K")) :
+                    if not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])) and not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif ((piece[0] == "b") or (piece[0] == "B")) and ((piece2[0] == "r") or (piece2[0] == "R")) :
+                    if not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])) and not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif ((piece[0] == "b") or (piece[0] == "B")) and ((piece2[0] == "q") or (piece2[0] == "Q")) :
+                    if not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])) and not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif ((piece[0] == "r") or (piece[0] == "R")) and ((piece2[0] == "k") or (piece2[0] == "K")):
+                    if not(checkRook(piece[1],piece[2],piece2[1],piece2[2])) and not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif ((piece[0] == "r") or (piece[0] == "R")) and ((piece2[0] == "b") or (piece2[0] == "B")):
+                    if not(checkRook(piece[1],piece[2],piece2[1],piece2[2])) and not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif ((piece[0] == "r") or (piece[0] == "R")) and ((piece2[0] == "q") or (piece2[0] == "Q")):
+                    if not(checkRook(piece[1],piece[2],piece2[1],piece2[2])) and not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif ((piece[0] == "q") or (piece[0] == "Q")) and ((piece2[0] == "k") or (piece2[0] == "K")):
+                    if not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])) and not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif ((piece[0] == "q") or (piece[0] == "Q")) and ((piece2[0] == "b") or (piece2[0] == "B")):
+                    if not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])) and not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif ((piece[0] == "q") or (piece[0] == "Q")) and ((piece2[0] == "r") or (piece2[0] == "R")):
+                    if not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])) and not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+    return ff    
     
 def generatePopulation(Obj,nParent):
     population = []
@@ -238,7 +235,7 @@ def selectedParent(population):
     for i in range(3):              #select 3 best Parents
         idxMax = 0
         for j in range (1, len(population)):
-            if (fitnessFunction(population[j]) > fitnessFunction(population[idxMax])):
+            if (notAttackingPieces(population[j]) > notAttackingPieces(population[idxMax])):
                 idxMax = j
 
         best3Parents.append (population[idxMax])
@@ -273,6 +270,7 @@ def crossOver(population, totalPieces):
     return [child1, child2, child3, child4]
 
 
+
 # main
 def main():
     # read fileInput
@@ -297,6 +295,10 @@ def main():
         nyth.simulatedAnnealing()
     else:
         nyth.geneticAlgorithm()
+
+    # show chessBoard
+    for row in nyth.chessBoard:
+        print(row)
 
 if __name__ == '__main__':
     main()
