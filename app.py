@@ -102,7 +102,6 @@ class nything:
                 print(self.chessBoard[i][j], end=' ')
             print()
 
-
     def randomize(self):
         # randomize chess pieces in matrix based on attributes
 
