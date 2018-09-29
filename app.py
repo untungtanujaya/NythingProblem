@@ -189,6 +189,7 @@ class nything:
 
     def geneticAlgorithm(self):
         # solve using geneticAlgorithm
+        # self.randomize()
         population = generatePopulation(self,4)
         done = False
         result = []
@@ -260,8 +261,8 @@ def notAttackingPieces(chessLocator):
 def generatePopulation(Obj,nParent):
     population = []
     for i in range(nParent):
-        population.append(Obj.chessLocator)
         Obj.randomize()
+        population.append(Obj.chessLocator)
     return population
 
 def selectedParent(population):
@@ -329,8 +330,6 @@ def main():
     nyth = nything(fileInput)
 
     # set matrix
-    nyth.randomize()
-    nyth.printAttr()
 
     # solve nyth
     print("1. hillClimbing")
@@ -341,9 +340,13 @@ def main():
         print("input = 1, 2, 3")
         x = int(input("Which algorithm do you want to choose? "))
     if x == 1:
-        nyth.hillClimbing()
+    	nyth.randomize()
+    	nyth.printAttr()
+    	nyth.hillClimbing()
     elif x == 2:
-        nyth.simulatedAnnealing()
+    	nyth.randomize()
+    	nyth.printAttr()
+    	nyth.simulatedAnnealing()
     else:
         nyth.geneticAlgorithm()
 
