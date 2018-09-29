@@ -173,10 +173,20 @@ class nything:
     def countTarget(n):
     	return (n*(n-1))/2
 
-    def fitnessFunction(self):
+    def geneticAlgorithm(self):
+        # solve using geneticAlgorithm
+        print(fitnessFunction(self.chessLocator))
+        population = generatePopulation(self,4)
+        best3Parents = selectedParent(population)
+        for x in best3Parents:
+            print(x)
+        for x in crossOver (best3Parents, len(self.chessLocator)):
+            print(x)
+
+def fitnessFunction(chessLocator):
     	ff = 0
-    	for idx,piece in enumerate(self.chessLocator):
-    		for idx2,piece2 in enumerate(self.chessLocator):
+    	for idx,piece in enumerate(chessLocator):
+    		for idx2,piece2 in enumerate(chessLocator):
     			if idx < idx2:
     				if ((piece[0] == "k") or (piece[0] == "K")) and ((piece2[0] == "b") or (piece2[0] == "B")):
     					if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])) and not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
@@ -214,18 +224,54 @@ class nything:
     				elif ((piece[0] == "q") or (piece[0] == "Q")) and ((piece2[0] == "r") or (piece2[0] == "R")):
     					if not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])) and not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
     						ff += 1
-    	return ff
+    	return ff    
+    
+def generatePopulation(Obj,nParent):
+    population = []
+    for i in range(nParent):
+        population.append(Obj.chessLocator)
+        Obj.randomize()
+    return population
 
-    def selectedParent(population):
-    	return
-    	
+def selectedParent(population):
+    best3Parents = []
+    for i in range(3):              #select 3 best Parents
+        idxMax = 0
+        for j in range (1, len(population)):
+            if (fitnessFunction(population[j]) > fitnessFunction(population[idxMax])):
+                idxMax = j
 
-    def geneticAlgorithm(self):
-        # solve using geneticAlgorithm
-      	print(self.fitnessFunction())
+        best3Parents.append (population[idxMax])
+        population.pop (idxMax)
 
-def generatePopulation():
-   	return
+    return best3Parents
+
+def crossOver(population, totalPieces):
+    child1 = []
+    child2 = []
+    child3 = []
+    child4 = []
+
+    separator1 = random.randint(0, totalPieces-1)
+    print ("separator 1 = ",separator1)
+    for i in range(0,separator1):
+        child1.append (population[0][i])
+        child2.append (population[1][i])
+    for i in range(separator1, totalPieces):
+        child1.append (population[1][i])
+        child2.append (population[0][i])
+
+    separator2 = random.randint(0, totalPieces-1)
+    print ("separator 2 = ",separator2)
+    for i in range(0,separator2):
+        child3.append (population[1][i])
+        child4.append (population[2][i])
+    for i in range(separator2, totalPieces):
+        child3.append (population[2][i])
+        child4.append (population[1][i])
+
+    return [child1, child2, child3, child4]
+
 
 # main
 def main():
