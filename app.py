@@ -189,7 +189,6 @@ class nything:
 
     def geneticAlgorithm(self):
         # solve using geneticAlgorithm
-        # self.randomize()
         population = generatePopulation(self,4)
         done = False
         result = []
@@ -198,8 +197,11 @@ class nything:
         	childs = crossOver(best3Parents,len(self.chessLocator))
         	for child in childs:
         		mutation(child,len(self.chessLocator))
+        	# print(childs)
+        	# print(len(self.chessLocator))
         	population = childs
         	for child in childs:
+        		# print(notAttackingPieces(child))
         		if (notAttackingPieces(child) == countTarget(len(self.chessLocator))):
         			result = child
         			done = True
@@ -223,6 +225,9 @@ def notAttackingPieces(chessLocator):
                 if ((piece[0] == "k") or (piece[0] == "K")) and ((piece2[0] == "b") or (piece2[0] == "B")):
                     if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])) and not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
                         ff += 1
+                elif ((piece[0] == "k") or (piece[0] == "K")) and ((piece2[0] == "k") or (piece2[0] == "K")):
+                    if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
                 elif ((piece[0] == "k") or (piece[0] == "K")) and ((piece2[0] == "r") or (piece2[0] == "R")):
                     if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])) and not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
                         ff += 1
@@ -232,6 +237,9 @@ def notAttackingPieces(chessLocator):
                 elif ((piece[0] == "b") or (piece[0] == "B")) and ((piece2[0] == "k") or (piece2[0] == "K")) :
                     if not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])) and not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])):
                         ff += 1
+                elif ((piece[0] == "b") or (piece[0] == "B")) and ((piece2[0] == "b") or (piece2[0] == "B")):
+                    if not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1   
                 elif ((piece[0] == "b") or (piece[0] == "B")) and ((piece2[0] == "r") or (piece2[0] == "R")) :
                     if not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])) and not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
                         ff += 1
@@ -240,6 +248,9 @@ def notAttackingPieces(chessLocator):
                         ff += 1
                 elif ((piece[0] == "r") or (piece[0] == "R")) and ((piece2[0] == "k") or (piece2[0] == "K")):
                     if not(checkRook(piece[1],piece[2],piece2[1],piece2[2])) and not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif ((piece[0] == "r") or (piece[0] == "R")) and ((piece2[0] == "r") or (piece2[0] == "R")):
+                    if not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
                         ff += 1
                 elif ((piece[0] == "r") or (piece[0] == "R")) and ((piece2[0] == "b") or (piece2[0] == "B")):
                     if not(checkRook(piece[1],piece[2],piece2[1],piece2[2])) and not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
@@ -255,6 +266,9 @@ def notAttackingPieces(chessLocator):
                         ff += 1
                 elif ((piece[0] == "q") or (piece[0] == "Q")) and ((piece2[0] == "r") or (piece2[0] == "R")):
                     if not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])) and not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif ((piece[0] == "q") or (piece[0] == "Q")) and ((piece2[0] == "q") or (piece2[0] == "Q")):
+                    if not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])):
                         ff += 1
     return ff    
     
