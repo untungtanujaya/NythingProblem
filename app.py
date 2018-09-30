@@ -192,7 +192,9 @@ class nything:
         population = generatePopulation(self,4)
         done = False
         result = []
+        n = 0
         while not(done):
+        	n+=1	
         	best3Parents = selectedParent(population)
         	childs = crossOver(best3Parents,len(self.chessLocator))
         	for child in childs:
@@ -202,16 +204,28 @@ class nything:
         	population = childs
         	for child in childs:
         		# print(notAttackingPieces(child))
-        		if (notAttackingPieces(child) == countTarget(len(self.chessLocator))):
-        			result = child
-        			done = True
-        			break
+        		if n<30000:
+        			if (notAttackingPieces(child) == countTarget(len(self.chessLocator))):
+        				result = child
+        				done = True
+        				break
+        		elif n<40000:
+        			if (notAttackingPieces(child) >= countTarget(len(self.chessLocator))-1):
+        				result = child
+        				done = True
+        				break
+        		else:
+        			if (notAttackingPieces(child) >= countTarget(len(self.chessLocator))-2):
+        				result = child
+        				done = True
+        				break
         print(result)
        	self.setChessBoard(result)
         for i in range(8):
             for j in range(8):
                 print(self.chessBoard[i][j], end=' ')
             print()
+        print("iterasi : ",n)
 
        
 def countTarget(n):
