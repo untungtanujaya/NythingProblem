@@ -122,38 +122,41 @@ class nything:
 
         # put chess piece to board
         for piece in self.chessPieces:
-            r = random.randint(0,7) # index 0 - 7
-            c = random.randint(0,7)
-            self.chessBoard[r][c] = piece
-            self.chessLocator.append((piece, r, c))
+            x = random.randint(0,7) # index 0 - 7
+            y = random.randint(0,7)
+            while (self.chessBoard[x][y] != "."):
+                x = random.randint(0,7) # index 0 - 7
+                y = random.randint(0,7)
+            # get value x, y which place has no piece
+            self.chessBoard[x][y] = piece
+            self.chessLocator.append((piece, x, y))
 
-    def changePiece(self, piece1, piece2):
+    def changePiece(self, piece1, x, y):
         # change piece at chessBoard
         # piece1 and piece2 are tuple of piece, row index, and column index
-        x, r1, c1 = piece1
-        y, r2, c2 = piece2
-        # x and y are unused
-
+        w, x0, y0 = piece1
+        # w unused
         # move piece on board
-        temp = self.chessBoard[r1][c1]
-        self.chessBoard[r1][c1] = self.chessBoard[r2][c2]
-        self.chessBoard[r2][c2] = temp
+        temp = self.chessBoard[x0][y0]
+        self.chessBoard[x0][y0] = self.chessBoard[x][y]
+        self.chessBoard[x][y] = temp
+        # update chessLocator
+        i = self.chessLocator.index(piece1)
+        self.chessLocator[i] = (w, x, y)
 
     def hillClimbing(self):
-        # solve using hillClimbing, return local maximum (make another attribute called res)
-        for el in self.chessLocator:
-            # start hill climbing
-            current = el
-            found = False
-            while not found:
-                neighbor = self.findHighestValueSucc(current)
-                if self.hValue(neighbor) <= self.hValue(current):
-                    found = True
-                self.changePiece(current,neighbor)
-                # change locator
-                current = neighbors
+        # solve board using hillClimbing algorithm
+        state = self.chessBoard.clone()
+        # make nextStates array
+        nextStates = []
+        nextStates += mover(self.chessBoard)
+        # count heuristic value for state board and compare with every board in nextStates array
+        vState = notAttackingPieces(self.chessBoard)
+        
 
-    def hValue(self, piece):
+
+
+    def hValue(self, board):
         # return height value of x position
         return 0
 
@@ -166,7 +169,7 @@ class nything:
         # solve using simulatedAnnealing
         print(2)
 
-  
+
     def countTarget(n):
     	return (n*(n-1))/2
 
@@ -215,7 +218,7 @@ class nything:
 
     def selectedParent(population):
     	return
-    	
+
 
     def geneticAlgorithm(self):
         # solve using geneticAlgorithm
