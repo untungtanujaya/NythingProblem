@@ -412,7 +412,7 @@ class nything:
         return nextState
     
 
-    def simulatedAnnealing(self):
+    def simulatedAnnealing(self, suhu, pendinginan):
         # solve using simulatedAnnealing
         def PeluangKonstan():
         # Mengembalikan nilai peluang yang dipilih langsung (nilai boleh diubah selama berada di jangkauan 0.000...1 ~ 0.999...)
