@@ -2,6 +2,7 @@
 # Desc : read the txt file (fileInput), then make object nything.
 
 import random
+import math
 
 def checkKnight(x1,y1,x2,y2):
     if ((x2 == x1 + 2) and ((y2 == y1 -1) or (y2 == y1 + 1))) or (x2 == x1 - 2 and ((y2 == y1 - 1) or (y2 == y1 + 1))) or ((y2 == y1 + 2) and ((x2 == x1 -1) or (x2 == x1 + 1))) or ((y2 == y1 - 2) and ((x2 == x1 - 1) or (x2 == x1 + 1))):
@@ -183,9 +184,54 @@ class nything:
         # return position of neighbors (piece are dot ('.'))
         return ('.', 0, 0)
 
-    def simulatedAnnealing(self):
-        # solve using simulatedAnnealing
-        print(2)
+    def simulatedAnnealing(self, suhu, pendinginan):
+    # Prosedur menjalankan algoritme Simulated Annealing
+        def PeluangKonstan():
+        # Mengembalikan nilai peluang yang dipilih langsung (nilai boleh diubah selama berada di jangkauan 0.000...1 ~ 0.999...)
+            return 0.1
+
+        def PeluangMenurun(P, Temperature):
+        # Mengembalikan niai peluang yang menurun secara perlahan
+            return P * Temperature
+
+        def PeluangBoltzmann(e, ei, suhu):
+        # Mengembalikan nilai hasil dari distribusi Boltzmann
+            return math.exp((ei - e) / suhu)
+
+        def PeluangAcak():
+        # Mengembalikan nilai peluang secara acak
+            return random.random()
+        
+        # 1. Tahap Inisialisasi (penempatan bidak secara acak)
+        randomize(self)
+        X = self.chessLocator
+        
+        # 2. Tahap Menghitung Nilai Heuristik Pertama dengan nama 'E' berdasarkan slide
+        E = 0
+        for bidak in self.chessLocator:
+            E += hValue(X[bidak])
+        
+        while (suhu > 1):
+            # 3. Tahap Menghitung Jumlah Kemungkinan Pergerakan untuk Seluruh Bidak
+            i = []  # BELUM SELESAI
+            
+            # 4. Tahap Menghitung Nilai Heuristik Kedua dengan nama 'Ei' berdasarkan slide
+            Ei = 0
+            NomorAcak = random.randint(0, len(i))
+            for bidak in chessLokasi:
+                Ei += hValue(i[NomorAcak][bidak])
+                
+            # 5. Membandingkan Nilai Heuristik Satu Sama Lain
+            if (E <= Ei):
+                E = Ei
+                X = i[NomorAcak]
+            else:   # Menggunakan Peluang Konstan
+                if (PeluangAcak() < PeluangKonstan()):
+                    X = i[NomorAcak]
+                    E = Ei
+                    
+            suhu *= pendinginan
+
 
     def geneticAlgorithm(self):
         # solve using geneticAlgorithm
