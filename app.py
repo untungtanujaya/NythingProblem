@@ -2,6 +2,7 @@
 # Desc : read the txt file (fileInput), then make object nything.
 
 import random
+import math
 
 def checkKnight(x1,y1,x2,y2):
     if ((x2 == x1 + 2) and ((y2 == y1 -1) or (y2 == y1 + 1))) or (x2 == x1 - 2 and ((y2 == y1 - 1) or (y2 == y1 + 1))) or ((y2 == y1 + 2) and ((x2 == x1 -1) or (x2 == x1 + 1))) or ((y2 == y1 - 2) and ((x2 == x1 - 1) or (x2 == x1 + 1))):
@@ -101,6 +102,27 @@ class nything:
             for j in range(8):
                 print(self.chessBoard[i][j], end=' ')
             print()
+
+    def setChessBoard(self, input):
+        # init chess' locator
+        self.chessLocator = []
+        # init chess board
+        self.chessBoard = [
+            [".",".",".",".",".",".",".","."],
+            [".",".",".",".",".",".",".","."],
+            [".",".",".",".",".",".",".","."],
+            [".",".",".",".",".",".",".","."],
+            [".",".",".",".",".",".",".","."],
+            [".",".",".",".",".",".",".","."],
+            [".",".",".",".",".",".",".","."],
+            [".",".",".",".",".",".",".","."]
+        ]
+        for i in range(len(input)):
+            piece = input[i][0]
+            r = input[i][1]
+            c = input[i][2]
+            self.chessBoard[r][c] = piece
+            self.chessLocator.append((piece, r, c))
 
     def randomize(self):
         # randomize chess pieces in matrix based on attributes
@@ -222,10 +244,167 @@ class nything:
 
     def geneticAlgorithm(self):
         # solve using geneticAlgorithm
-      	print(3)
+        population = generatePopulation(self,4)
+        done = False
+        result = []
+        n = 0
+        while not(done):
+        	n+=1
+        	best3Parents = selectedParent(population)
+        	childs = crossOver(best3Parents,len(self.chessLocator))
+        	for child in childs:
+        		mutation(child,len(self.chessLocator))
+        	# print(childs)
+        	# print(len(self.chessLocator))
+        	population = childs
+        	for child in childs:
+        		# print(notAttackingPieces(child))
+        		if n<30000:
+        			if (notAttackingPieces(child) == countTarget(len(self.chessLocator))):
+        				result = child
+        				done = True
+        				break
+        		elif n<40000:
+        			if (notAttackingPieces(child) >= countTarget(len(self.chessLocator))-1):
+        				result = child
+        				done = True
+        				break
+        		else:
+        			if (notAttackingPieces(child) >= countTarget(len(self.chessLocator))-2):
+        				result = child
+        				done = True
+        				break
+        print(result)
+       	self.setChessBoard(result)
+        for i in range(8):
+            for j in range(8):
+                print(self.chessBoard[i][j], end=' ')
+            print()
+        print("iterasi : ",n)
 
-def generatePopulation():
-   	return
+
+def countTarget(n):
+    	return int((n*(n-1))/2)
+
+def notAttackingPieces(chessLocator):
+    ff = 0
+    for idx,piece in enumerate(chessLocator):
+        for idx2,piece2 in enumerate(chessLocator):
+            if idx < idx2:
+                if ((piece[0] == "k") or (piece[0] == "K")) and ((piece2[0] == "b") or (piece2[0] == "B")):
+                    if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])) and not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif ((piece[0] == "k") or (piece[0] == "K")) and ((piece2[0] == "k") or (piece2[0] == "K")):
+                    if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif ((piece[0] == "k") or (piece[0] == "K")) and ((piece2[0] == "r") or (piece2[0] == "R")):
+                    if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])) and not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif ((piece[0] == "k") or (piece[0] == "K")) and ((piece2[0] == "q") or (piece2[0] == "Q")):
+                    if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])) and not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif ((piece[0] == "b") or (piece[0] == "B")) and ((piece2[0] == "k") or (piece2[0] == "K")) :
+                    if not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])) and not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif ((piece[0] == "b") or (piece[0] == "B")) and ((piece2[0] == "b") or (piece2[0] == "B")):
+                    if not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif ((piece[0] == "b") or (piece[0] == "B")) and ((piece2[0] == "r") or (piece2[0] == "R")) :
+                    if not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])) and not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif ((piece[0] == "b") or (piece[0] == "B")) and ((piece2[0] == "q") or (piece2[0] == "Q")) :
+                    if not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])) and not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif ((piece[0] == "r") or (piece[0] == "R")) and ((piece2[0] == "k") or (piece2[0] == "K")):
+                    if not(checkRook(piece[1],piece[2],piece2[1],piece2[2])) and not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif ((piece[0] == "r") or (piece[0] == "R")) and ((piece2[0] == "r") or (piece2[0] == "R")):
+                    if not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif ((piece[0] == "r") or (piece[0] == "R")) and ((piece2[0] == "b") or (piece2[0] == "B")):
+                    if not(checkRook(piece[1],piece[2],piece2[1],piece2[2])) and not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif ((piece[0] == "r") or (piece[0] == "R")) and ((piece2[0] == "q") or (piece2[0] == "Q")):
+                    if not(checkRook(piece[1],piece[2],piece2[1],piece2[2])) and not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif ((piece[0] == "q") or (piece[0] == "Q")) and ((piece2[0] == "k") or (piece2[0] == "K")):
+                    if not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])) and not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif ((piece[0] == "q") or (piece[0] == "Q")) and ((piece2[0] == "b") or (piece2[0] == "B")):
+                    if not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])) and not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif ((piece[0] == "q") or (piece[0] == "Q")) and ((piece2[0] == "r") or (piece2[0] == "R")):
+                    if not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])) and not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif ((piece[0] == "q") or (piece[0] == "Q")) and ((piece2[0] == "q") or (piece2[0] == "Q")):
+                    if not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+    return ff
+
+def generatePopulation(Obj,nParent):
+    population = []
+    for i in range(nParent):
+        Obj.randomize()
+        population.append(Obj.chessLocator)
+    return population
+
+def selectedParent(population):
+    best3Parents = []
+    for i in range(3):              #select 3 best Parents
+        idxMax = 0
+        for j in range (1, len(population)):
+            if (notAttackingPieces(population[j]) > notAttackingPieces(population[idxMax])):
+                idxMax = j
+
+        best3Parents.append (population[idxMax])
+        population.pop (idxMax)
+
+    return best3Parents
+
+def crossOver(population, totalPieces):
+    child1 = []
+    child2 = []
+    child3 = []
+    child4 = []
+
+    separator1 = random.randint(0, totalPieces-1)
+    for i in range(0,separator1):
+        child1.append (population[0][i])
+        child2.append (population[1][i])
+    for i in range(separator1, totalPieces):
+        child1.append (population[1][i])
+        child2.append (population[0][i])
+
+    separator2 = random.randint(0, totalPieces-1)
+    for i in range(0,separator2):
+        child3.append (population[1][i])
+        child4.append (population[2][i])
+    for i in range(separator2, totalPieces):
+        child3.append (population[2][i])
+        child4.append (population[1][i])
+
+    return [child1, child2, child3, child4]
+
+def mutation(chessLocator, totalPieces):
+    idx = random.randint (0, totalPieces-1)
+    while True:
+        r = random.randint(0, 7)
+        c = random.randint(0, 7)
+        unique = True       #check if the mutation new position != other pieces position
+        i = 0
+        while (i<totalPieces) and (unique):
+            if (r == chessLocator[i][1]) and (c == chessLocator[i][2]):
+                unique = False
+            else:
+                i+=1
+        if (unique):
+            break
+    temp = list(chessLocator[idx])
+    temp[1] = r
+    temp[2] = c
+    chessLocator[idx] = tuple(temp)
+
+
 
 # main
 def main():
@@ -233,8 +412,7 @@ def main():
     fileInput = input(str("Which file you want to open? "))
     nyth = nything(fileInput)
     # set matrix
-    nyth.randomize()
-    nyth.printAttr()
+
     # solve nyth
     print("1. hillClimbing")
     print("2. simulatedAnnealing")
@@ -244,9 +422,13 @@ def main():
         print("input = 1, 2, 3")
         x = int(input("Which algorithm do you want to choose? "))
     if x == 1:
-        nyth.hillClimbing()
+    	nyth.randomize()
+    	nyth.printAttr()
+    	nyth.hillClimbing()
     elif x == 2:
-        nyth.simulatedAnnealing()
+    	nyth.randomize()
+    	nyth.printAttr()
+    	nyth.simulatedAnnealing()
     else:
         nyth.geneticAlgorithm()
     # show chessBoard
