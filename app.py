@@ -152,7 +152,7 @@ class nything:
         nextStates += mover(self.chessBoard)
         # count heuristic value for state board and compare with every board in nextStates array
         vState = notAttackingPieces(self.chessBoard)
-        
+
 
 
 
@@ -232,11 +232,9 @@ def main():
     # read fileInput
     fileInput = input(str("Which file you want to open? "))
     nyth = nything(fileInput)
-
     # set matrix
     nyth.randomize()
     nyth.printAttr()
-
     # solve nyth
     print("1. hillClimbing")
     print("2. simulatedAnnealing")
@@ -251,7 +249,6 @@ def main():
         nyth.simulatedAnnealing()
     else:
         nyth.geneticAlgorithm()
-
     # show chessBoard
     for row in nyth.chessBoard:
         print(row)
