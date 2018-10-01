@@ -187,9 +187,280 @@ class nything:
         # return position of neighbors (piece are dot ('.'))
         return ('.', 0, 0)
 
+    def matrixOfNextState(state):
+    # Mengembalikan senarai yang berisi kumpulan state selanjutnya yang memungkinkan
+        nextState = []  # Variabel untuk menyimpan state selanjutnya
+        
+        def isValid(Angka1, Angka2):
+        # Periksa keabsahan koordinat di jangkauan
+            return ((Angka1 >= 0) and (Angka1 <= 7) and (Angka2 >= 0) and (Angka2 <= 7))
+        
+        def isEmpty(state, row, col):
+        # Mencari keberadaan suatu bidak di posisi row col
+            Kosong = True
+            for bidak in state:
+                if ((state[bidak][1] == row) and (state[bidak][2] == col)):
+                    Kosong = False
+                    break
+                    
+            return Kosong
+        
+        def newStateExcept(state, bidakLama, bidakBaru):
+        # Menjadikan suatu senarai yang berisi satu state, tapi membuang state yang ada di parameter
+            stateBaru = [i for i in state if i != bidakLama] 
+            stateBaru.append(bidakBaru)
+            return stateBaru
+        
+        # BENTENG BERJALAN
+        def Benteng(state, bidak):
+        # Mengisi state yang memungkinkan si benteng untuk berjalan ke arah yang dikehendaki
+            Brs = bidak[1]
+            Kol = bidak[2]
+            
+            # Tahap Berjalan ke Kiri
+            for col in range(Kol, 0):
+                if (isEmpty(state, Brs, col)):
+                    nextState.append(newStateExcept( state, bidak, ('R', Brs, col) ))
+                else:   # Ada penghalang, sehingga akhir dari perjalanan
+                    break
+            
+            # Tahap Berjalan ke Kanan
+            for col in range(Kol, 7):
+                if (isEmpty(state, Brs, col)):
+                    nextState.append(newStateExcept( state, bidak, ('R', Brs, col) ))
+                else:   # Ada penghalang
+                    break
+                    
+            # Tahap Berjalan ke Atas
+            for row in range(Brs, 0):
+                if (isEmpty(state, row, Kol)):
+                    nextState.append(newStateExcept( state, bidak, ('R', row, Kol) ))
+                else:   # Ada penghalang
+                    break
+            
+            # Tahap Berjalan ke Bawah
+            for row in range(Brs, 7):
+                if (isEmpty(state, row, Kol)):
+                    nextState.append(newStateExcept( state, bidak, ('R', row, Kol) ))
+                else:   # Ada penghalang
+                    break
+            
+        # KUDA BERJALAN
+        def Kuda(state, bidak):
+        # Mengisi state yang memungkinkan si kuda untuk berjalan ke arah yang dikehendaki
+            Brs = bidak[1]
+            Kol = bidak[2]
+            Gerak1 = [-2, 2]
+            Gerak2 = [-1, 1]
+            for i in range(0, 1):
+                for j in range(0, 1):
+                    Baris = Brs + Gerak1[i]
+                    Kolom = Kol + Gerak2[j]
+                    if (isValid(Baris, Kolom)):
+                        if (isEmpty(state, Baris, Kolom)):
+                            nextState.append(newStateExcept( state, bidak, ('K', Baris, Kolom) ))
+
+        # MENTERI BERJALAN
+        def Menteri(state, bidak):
+        # Mengisi state yang memungkinkan si benteng untuk berjalan ke arah yang dikehendaki
+            Brs = bidak[1]
+            Kol = bidak[2]
+            
+            # Tahap Berjalan ke Kanan Bawah
+            for i in range(1, 7):
+                Baris = Brs + i
+                Kolom = Kol + i
+                if (isValid(Baris, Kolom)):
+                    if (isEmpty(state, Baris, Kolom)):
+                        nextState.append(newStateExcept( state, bidak, ('B', Baris, Kolom) ))
+                    else:   # Ada penghalang
+                        break
+                else:       # Di luar jangkauan catur
+                    break
+            
+            # Tahap Berjalan ke Kiri Atas
+            for i in range(1, 7):
+                Baris = Brs - i
+                Kolom = Kol - i
+                if (isValid(Baris, Kolom)):
+                    if (isEmpty(state, Baris, Kolom)):
+                        nextState.append(newStateExcept( state, bidak, ('B', Baris, Kolom) ))
+                    else:   # Ada penghalang
+                        break
+                else:       # Di luar jangkauan catur
+                    break
+                    
+            # Tahap Berjalan ke Kanan Atas
+            for i in range(1, 7):
+                Baris = Brs - i
+                Kolom = Kol + i
+                if (isValid(Baris, Kolom)):
+                    if (isEmpty(state, Baris, Kolom)):
+                        nextState.append(newStateExcept( state, bidak, ('B', Baris, Kolom) ))
+                    else:   # Ada penghalang
+                        break
+                else:       # Di luar jangkauan catur
+                    break
+            
+            # Tahap Berjalan ke Kiri Bawah
+            for i in range(1, 7):
+                Baris = Brs + i
+                Kolom = Kol - i
+                if (isValid(Baris, Kolom)):
+                    if (isEmpty(state, Baris, Kolom)):
+                        nextState.append(newStateExcept( state, bidak, ('B', Baris, Kolom) ))
+                    else:   # Ada penghalang
+                        break
+                else:       # Di luar jangkauan catur
+                    break
+            
+        # RATU BERJALAN
+        def Ratu(state, bidak):
+        # Mengisi state yang memungkinkan si ratu untuk berjalan ke arah yang dikehendaki
+            Brs = bidak[1]
+            Kol = bidak[2]
+            
+            # PERGERAKAN MENYERUPAI "BENTENG"
+            # Tahap Berjalan ke Kiri
+            for col in range(Kol, 0):
+                if (isEmpty(state, Brs, col)):
+                    nextState.append(newStateExcept( state, bidak, ('Q', Brs, col) ))
+                else:   # Ada penghalang, sehingga akhir dari perjalanan
+                    break
+            
+            # Tahap Berjalan ke Kanan
+            for col in range(Kol, 7):
+                if (isEmpty(state, Brs, col)):
+                    nextState.append(newStateExcept( state, bidak, ('Q', Brs, col) ))
+                else:   # Ada penghalang
+                    break
+                    
+            # Tahap Berjalan ke Atas
+            for row in range(Brs, 0):
+                if (isEmpty(state, row, Kol)):
+                    nextState.append(newStateExcept( state, bidak, ('Q', row, Kol) ))
+                else:   # Ada penghalang
+                    break
+            
+            # Tahap Berjalan ke Bawah
+            for row in range(Brs, 7):
+                if (isEmpty(state, row, Kol)):
+                    nextState.append(newStateExcept( state, bidak, ('Q', row, Kol) ))
+                else:   # Ada penghalang
+                    break
+            
+            # PERGERAKAN MENYERUPAI "MENTERI"
+            # Tahap Berjalan ke Kanan Bawah
+            for i in range(1, 7):
+                Baris = Brs + i
+                Kolom = Kol + i
+                if (isValid(Baris, Kolom)):
+                    if (isEmpty(state, Baris, Kolom)):
+                        nextState.append(newStateExcept( state, bidak, ('Q', Baris, Kolom) ))
+                    else:   # Ada penghalang
+                        break
+                else:       # Di luar jangkauan catur
+                    break
+            
+            # Tahap Berjalan ke Kiri Atas
+            for i in range(1, 7):
+                Baris = Brs - i
+                Kolom = Kol - i
+                if (isValid(Baris, Kolom)):
+                    if (isEmpty(state, Baris, Kolom)):
+                        nextState.append(newStateExcept( state, bidak, ('Q', Baris, Kolom) ))
+                    else:   # Ada penghalang
+                        break
+                else:       # Di luar jangkauan catur
+                    break
+                    
+            # Tahap Berjalan ke Kanan Atas
+            for i in range(1, 7):
+                Baris = Brs - i
+                Kolom = Kol + i
+                if (isValid(Baris, Kolom)):
+                    if (isEmpty(state, Baris, Kolom)):
+                        nextState.append(newStateExcept( state, bidak, ('Q', Baris, Kolom) ))
+                    else:   # Ada penghalang
+                        break
+                else:       # Di luar jangkauan catur
+                    break
+            
+            # Tahap Berjalan ke Kiri Bawah
+            for i in range(1, 7):
+                Baris = Brs + i
+                Kolom = Kol - i
+                if (isValid(Baris, Kolom)):
+                    if (isEmpty(state, Baris, Kolom)):
+                        nextState.append(newStateExcept( state, bidak, ('Q', Baris, Kolom) ))
+                    else:   # Ada penghalang
+                        break
+                else:       # Di luar jangkauan catur
+                    break
+            
+        # ALGORITME LOKAL
+        for pieces in state:
+            if (pieces[0] == 'R'):      # Memasukkan pergerakan Benteng
+                Benteng(state, pieces)
+            elif (pieces[0] == 'K'):    # Memasukkan pergerakan Kuda
+                Kuda(state, pieces)
+            elif (pieces[0] == 'B'):    # Memasukkan pergerakan Menteri
+                Menteri(state, pieces)
+            elif (pieces[0] == 'Q'):    # Memasukkan pergerakan Ratu
+                Ratu(state, pieces)
+            
+        return nextState
+    
+
     def simulatedAnnealing(self):
         # solve using simulatedAnnealing
-        print(2)
+        def PeluangKonstan():
+        # Mengembalikan nilai peluang yang dipilih langsung (nilai boleh diubah selama berada di jangkauan 0.000...1 ~ 0.999...)
+            return 0.1
+
+        def PeluangMenurun(P, Temperature):
+        # Mengembalikan niai peluang yang menurun secara perlahan
+            return P * Temperature
+
+        def PeluangBoltzmann(e, ei, suhu):
+        # Mengembalikan nilai hasil dari distribusi Boltzmann
+            return math.exp((ei - e) / suhu)
+
+        def PeluangAcak():
+        # Mengembalikan nilai peluang secara acak
+            return random.random()
+        
+	# ALGORITME LOKAL
+        # 1. Tahap Inisialisasi (penempatan bidak secara acak)
+        X = self.chessLocator
+        
+        # 2. Tahap Menghitung Nilai Heuristik Pertama dengan nama 'E' berdasarkan slide
+        E = 0
+        for bidak in X:
+            E += hValue(bidak)
+        
+        while (suhu > 1):
+            # 3. Tahap Menghitung Jumlah Kemungkinan Pergerakan untuk Seluruh Bidak
+            i = matrixOfNextState(X)  # MENUNGGU KABAR
+            
+            # 4. Tahap Menghitung Nilai Heuristik Kedua dengan nama 'Ei' berdasarkan slide
+            Ei = 0
+            NomorAcak = random.randint(0, len(i))
+            for bidak in i[NomorAcak]:
+                Ei += hValue(bidak)
+                
+            # 5. Membandingkan Nilai Heuristik Satu Sama Lain
+            if (E <= Ei):
+                E = Ei
+                X = i[NomorAcak]
+            else:   # Menggunakan Peluang Konstan (dapat diganti dengan Boltzmann atau Pengurangan)
+                if (PeluangAcak() < PeluangKonstan()):
+                    X = i[NomorAcak]
+                    E = Ei
+                    
+            suhu *= pendinginan
+            
+        return X
 
 
     def countTarget(n):
