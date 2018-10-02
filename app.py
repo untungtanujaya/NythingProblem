@@ -345,7 +345,7 @@ class nything:
                                 self.setChessBoard(self.chessLocator)
             if (hcurrent == countTarget(len(self.chessLocator))):
                 done = True
-            elif(n % 2 == 0):
+            elif(n % 2 == 1):
                 self.randomize()
                 hcurrent = notAttackingPieces(self.chessLocator)
         print("\niterasi : ",n)

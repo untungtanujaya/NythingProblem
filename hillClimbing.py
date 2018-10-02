@@ -269,7 +269,7 @@ class nything:
             vNextState = vNextStates[i]
             if (vNextState >= vState):
                 return self.chessBoard, self.chessLocator
-            else
+            else:
                 recHillClimbing(nextStates[i])
         self.chessBoard, self.chessLocator = recHillClimbing(self.chessBoard, self.chessLocator).clone()
 
