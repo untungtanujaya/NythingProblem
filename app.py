@@ -659,32 +659,34 @@ class nything:
 # main
 def main():
     # read fileInput
-    fileInput = input(str("Which file you want to open? "))
+    fileInput = input(str("Which file you want to open? : "))
     nyth = nything(fileInput)
     # set matrix
 
     # solve nyth
-    print("\n1. hillClimbing")
-    print("2. simulatedAnnealing")
-    print("3. geneticAlgorithm")
+    print("\n1. Hill Climbing")
+    print("2. Simulated Annealing")
+    print("3. Genetic Algorithm")
     x = int(input("\nWhich algorithm do you want to choose? "))
     while (x < 1) or (x > 3):
         print("input = 1, 2, 3")
         x = int(input("Which algorithm do you want to choose? "))
     if x == 1:
-    	nyth.randomize()
-    	nyth.printAttr()
-    	nyth.hillClimbing()
+        nyth.randomize()
+        nyth.printAttr()
+        print("Nilai Heuristic : " , (countTarget(len(nyth.chessLocator))- notAttackingPieces(nyth.chessLocator)))
+        nyth.hillClimbing()
     elif x == 2:
-    	nyth.randomize()
-    	nyth.printAttr()
-    	nyth.simulatedAnnealing(10000, 1)
+        nyth.randomize()
+        nyth.printAttr()
+        print("Nilai Heuristic : " , (countTarget(len(nyth.chessLocator))- notAttackingPieces(nyth.chessLocator)))
+        nyth.simulatedAnnealing(10000, 1)
     else:
         nyth.geneticAlgorithm()
     # show chessBoard
     print("\nHASIL")
     nyth.printChessBoard()
-    print((countTarget(len(nyth.chessLocator))- notAttackingPieces(nyth.chessLocator)),0)
+    print("Nilai Heuristic : " , (countTarget(len(nyth.chessLocator))- notAttackingPieces(nyth.chessLocator)))
 
 if __name__ == '__main__':
     main()
