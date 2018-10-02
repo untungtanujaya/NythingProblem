@@ -697,7 +697,7 @@ def main():
     # show chessBoard
     print("\nHASIL")
     nyth.printChessBoard()
-    print(notAttackingPieces(nyth.chessLocator),0)
+    print((countTarget(len(nyth.chessLocator))- notAttackingPieces(nyth.chessLocator)),0)
 
 if __name__ == '__main__':
     main()
