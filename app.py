@@ -2,6 +2,7 @@
 # Desc : read the txt file (fileInput), then make object nything.
 
 import random
+from copy import deepcopy
 import math
 
 def checkKnight(x1,y1,x2,y2):
@@ -87,6 +88,12 @@ class nything:
         # add object counter
         nything.nNything += 1
 
+    def printChessBoard(self):
+        for i in range(8):
+            for j in range(8):
+                print(self.chessBoard[i][j], end=' ')
+            print()
+
     def printAttr(self):
         # print attribute
         print("nWhiteKnight : " + str(self.nWhiteKnight))
@@ -97,7 +104,8 @@ class nything:
         print("nBlackBishop : " + str(self.nBlackBishop))
         print("nBlackRook : " + str(self.nBlackRook))
         print("nBlackQueen : " + str(self.nBlackQueen))
-        print(self.chessPieces)
+        print("List Bidak : ",self.chessPieces)
+        print("STATE AWAL")
         for i in range(8):
             for j in range(8):
                 print(self.chessBoard[i][j], end=' ')
@@ -168,14 +176,27 @@ class nything:
 
     def hillClimbing(self):
         # solve board using hillClimbing algorithm
-        state = self.chessBoard.clone()
-        # make nextStates array
-        nextStates = []
-        nextStates += mover(self.chessBoard)
-        # count heuristic value for state board and compare with every board in nextStates array
-        vState = notAttackingPieces(self.chessBoard)
-
-
+        hcurrent = notAttackingPieces(self.chessLocator)
+        done = False
+        n=0
+        while not(done):
+            n+=1
+            for idx in range(len(self.chessLocator)):
+                for i in range(8):
+                    for j in range(8):
+                        if not(checkBoard(self.chessLocator,i,j)):
+                            state = deepcopy(self.chessLocator)
+                            state[idx] = self.chessLocator[idx][0],i,j
+                            if hcurrent < notAttackingPieces(state):
+                                hcurrent = notAttackingPieces(state)
+                                self.chessLocator = deepcopy(state)
+                                self.setChessBoard(self.chessLocator)
+            if (hcurrent == countTarget(len(self.chessLocator))):
+                print(n)
+                done = True
+            elif(n % 2 == 0):
+                self.randomize()
+                hcurrent = notAttackingPieces(self.chessLocator)
 
 
     def hValue(self, board):
@@ -557,6 +578,14 @@ class nything:
 def countTarget(n):
     	return int((n*(n-1))/2)
 
+def checkBoard(states,i,j):
+    check = False
+    for state in states:
+        if (state[1] == i and state[2] == j):
+            check = True
+            break
+    return check
+
 def notAttackingPieces(chessLocator):
     ff = 0
     for idx,piece in enumerate(chessLocator):
@@ -703,8 +732,8 @@ def main():
     else:
         nyth.geneticAlgorithm()
     # show chessBoard
-    for row in nyth.chessBoard:
-        print(row)
+    print("HASIL")
+    nyth.printChessBoard()
 
 if __name__ == '__main__':
     main()
