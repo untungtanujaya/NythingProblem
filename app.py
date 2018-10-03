@@ -171,6 +171,232 @@ def mutation(chessLocator, totalPieces):
     temp[2] = c
     chessLocator[idx] = tuple(temp)
 
+#fitness funtion untuk bidak yang berbeda jenis
+def notAttackingSamePieces(chessLocator):
+    ff = 0
+    for idx,piece in enumerate(chessLocator):
+        for idx2,piece2 in enumerate(chessLocator):
+            if idx < idx2:
+                if (piece[0] == "k") and (piece2[0] == "b") :
+                    if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])) and not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif ((piece[0] == "k") and (piece2[0] == "k")):
+                    if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "k") and (piece2[0] == "r") :
+                    if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])) and not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "k") and (piece2[0] == "q") :
+                    if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])) and not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                if (piece[0] == "K") and (piece2[0] == "B") :
+                    if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])) and not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif ((piece[0] == "K") and (piece2[0] == "K")):
+                    if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "K") and (piece2[0] == "R") :
+                    if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])) and not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "K") and (piece2[0] == "Q") :
+                    if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])) and not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "b") and (piece2[0] == "k") :
+                    if not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])) and not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "b") and (piece2[0] == "b"):
+                    if not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "b") and (piece2[0] == "r")  :
+                    if not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])) and not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "b") and (piece2[0] == "q") :
+                    if not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])) and not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "B") and (piece2[0] == "K") :
+                    if not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])) and not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "B") and (piece2[0] == "B"):
+                    if not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "B") and (piece2[0] == "R")  :
+                    if not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])) and not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "B") and (piece2[0] == "Q") :
+                    if not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])) and not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "r") and (piece2[0] == "k"):
+                    if not(checkRook(piece[1],piece[2],piece2[1],piece2[2])) and not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "r") and (piece2[0] == "r"):
+                    if not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "r") and (piece2[0] == "b"):
+                    if not(checkRook(piece[1],piece[2],piece2[1],piece2[2])) and not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "r") and (piece2[0] == "q"):
+                    if not(checkRook(piece[1],piece[2],piece2[1],piece2[2])) and not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "R") and (piece2[0] == "K"):
+                    if not(checkRook(piece[1],piece[2],piece2[1],piece2[2])) and not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "R") and (piece2[0] == "R"):
+                    if not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "R") and (piece2[0] == "B"):
+                    if not(checkRook(piece[1],piece[2],piece2[1],piece2[2])) and not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "R") and (piece2[0] == "Q"):
+                    if not(checkRook(piece[1],piece[2],piece2[1],piece2[2])) and not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "q") and (piece2[0] == "k"):
+                    if not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])) and not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "q") and (piece2[0] == "b"):
+                    if not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])) and not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "q") and (piece2[0] == "r"):
+                    if not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])) and not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "q") and (piece2[0] == "q"):
+                    if not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "Q") and (piece2[0] == "K"):
+                    if not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])) and not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "Q") and (piece2[0] == "B"):
+                    if not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])) and not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "Q") and (piece2[0] == "R"):
+                    if not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])) and not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "Q") and (piece2[0] == "Q"):
+                    if not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+    return ff
+
+#fitness funtion untuk bidak yang berbeda jenis
+def notAttackingDiffPieces(chessLocator):
+    ff = 0
+    for idx,piece in enumerate(chessLocator):
+        for idx2,piece2 in enumerate(chessLocator):
+            if idx < idx2:
+                if (piece[0] == "k") and (piece2[0] == "B") :
+                    if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])) and not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif ((piece[0] == "k") and (piece2[0] == "K")):
+                    if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "k") and (piece2[0] == "R") :
+                    if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])) and not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "k") and (piece2[0] == "Q") :
+                    if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])) and not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                if (piece[0] == "K") and (piece2[0] == "b") :
+                    if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])) and not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif ((piece[0] == "K") and (piece2[0] == "k")):
+                    if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "K") and (piece2[0] == "r") :
+                    if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])) and not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "K") and (piece2[0] == "q") :
+                    if not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])) and not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "b") and (piece2[0] == "K") :
+                    if not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])) and not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "b") and (piece2[0] == "B"):
+                    if not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "b") and (piece2[0] == "R")  :
+                    if not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])) and not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "b") and (piece2[0] == "Q") :
+                    if not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])) and not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "B") and (piece2[0] == "k") :
+                    if not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])) and not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "B") and (piece2[0] == "b"):
+                    if not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "B") and (piece2[0] == "r")  :
+                    if not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])) and not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "B") and (piece2[0] == "q") :
+                    if not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])) and not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "r") and (piece2[0] == "K"):
+                    if not(checkRook(piece[1],piece[2],piece2[1],piece2[2])) and not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "r") and (piece2[0] == "R"):
+                    if not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "r") and (piece2[0] == "B"):
+                    if not(checkRook(piece[1],piece[2],piece2[1],piece2[2])) and not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "r") and (piece2[0] == "Q"):
+                    if not(checkRook(piece[1],piece[2],piece2[1],piece2[2])) and not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "R") and (piece2[0] == "k"):
+                    if not(checkRook(piece[1],piece[2],piece2[1],piece2[2])) and not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "R") and (piece2[0] == "r"):
+                    if not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "R") and (piece2[0] == "b"):
+                    if not(checkRook(piece[1],piece[2],piece2[1],piece2[2])) and not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "R") and (piece2[0] == "q"):
+                    if not(checkRook(piece[1],piece[2],piece2[1],piece2[2])) and not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "q") and (piece2[0] == "K"):
+                    if not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])) and not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "q") and (piece2[0] == "B"):
+                    if not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])) and not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "q") and (piece2[0] == "R"):
+                    if not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])) and not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "q") and (piece2[0] == "Q"):
+                    if not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "Q") and (piece2[0] == "k"):
+                    if not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])) and not(checkKnight(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "Q") and (piece2[0] == "b"):
+                    if not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])) and not(checkBishop(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "Q") and (piece2[0] == "r"):
+                    if not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])) and not(checkRook(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+                elif (piece[0] == "Q") and (piece2[0] == "q"):
+                    if not(checkQueen(piece[1],piece[2],piece2[1],piece2[2])):
+                        ff += 1
+    return ff
+
+# menghitung ada berapa seharusnya bidak yang sama yang tidak saling serang
+def countTargetSamePieces(state):
+    w = 0
+    b = 0
+    for piece in state:
+        if piece[0] == "k" or piece[0] == "b" or piece[0] == "r" or piece[0] == "q":
+            w += 1
+        else:
+            b += 1
+    targetw = int(w*(w-1)/2)
+    targetb = int(b*(b-1)/2)
+    return targetw+targetb
+
+# menghitung ada berapa seharusnya bidak yang sama yang tidak saling serang
+def countTargetDiffPieces(state):
+    return countTarget(len(state)) - countTargetSamePieces(state)
+
+
 
 class nything:
     'class nything is a class that solve NythingProblem from fileInput'
@@ -331,7 +557,8 @@ class nything:
         hcurrent = notAttackingPieces(self.chessLocator)
         done = False
         n=0
-        while not(done):
+        #iterasi setiap bidak, pindahkan ke kotak yang nilai hcurrent paling besar
+        while not(done) and (n != 70):
             n+=1
             for idx in range(len(self.chessLocator)):
                 for i in range(8):
@@ -345,10 +572,10 @@ class nything:
                                 self.setChessBoard(self.chessLocator)
             if (hcurrent == countTarget(len(self.chessLocator))):
                 done = True
+            #saat terjadi minimum lokal, random lagi susunan bidak
             elif(n % 2 == 1):
                 self.randomize()
                 hcurrent = notAttackingPieces(self.chessLocator)
-        print("\niterasi : ",n)
 
     def simulatedAnnealing(self, suhu, pendinginan):
         # solve using simulatedAnnealing
@@ -394,8 +621,6 @@ class nything:
                                 Xi = deepcopy(state)
                                 self.setChessBoard(Xi)
             Ei = hcurrent
-            print(X)
-            print(Xi)
             # 5. Membandingkan Nilai Heuristik Satu Sama Lain
             if (E <= Ei):
                 E = Ei
@@ -406,266 +631,31 @@ class nything:
                     E = Ei
             chanSuhu *= pendinginan
         self.setChessBoard(X)
-        return X
 
-    def matrixOfNextState(self, state):
-    # Mengembalikan senarai yang berisi kumpulan state selanjutnya yang memungkinkan
-        nextState = []  # Variabel untuk menyimpan state selanjutnya
-
-        def isValid(Angka1, Angka2):
-        # Periksa keabsahan koordinat di jangkauan
-            return ((Angka1 >= 0) and (Angka1 <= 7) and (Angka2 >= 0) and (Angka2 <= 7))
-
-        def isEmpty(state, row, col):
-        # Mencari keberadaan suatu bidak di posisi row col
-            Kosong = True
-            for bidak in state:
-                if ((bidak[1] == row) and (bidak[2] == col)):
-                    Kosong = False
-                    break
-
-            return Kosong
-
-        def newStateExcept(state, bidakLama, bidakBaru):
-        # Menjadikan suatu senarai yang berisi satu state, tapi membuang state yang ada di parameter
-            stateBaru = [i for i in state if i != bidakLama]
-            stateBaru.append(bidakBaru)
-            return stateBaru
-
-        # BENTENG BERJALAN
-        def Benteng(state, bidak):
-        # Mengisi state yang memungkinkan si benteng untuk berjalan ke arah yang dikehendaki
-            Brs = bidak[1]
-            Kol = bidak[2]
-
-            # Tahap Berjalan ke Kiri
-            for col in range(Kol, 0):
-                if (isEmpty(state, Brs, col)):
-                    nextState.append(newStateExcept( state, bidak, ('R', Brs, col) ))
-                else:   # Ada penghalang, sehingga akhir dari perjalanan
-                    break
-
-            # Tahap Berjalan ke Kanan
-            for col in range(Kol, 7):
-                if (isEmpty(state, Brs, col)):
-                    nextState.append(newStateExcept( state, bidak, ('R', Brs, col) ))
-                else:   # Ada penghalang
-                    break
-
-            # Tahap Berjalan ke Atas
-            for row in range(Brs, 0):
-                if (isEmpty(state, row, Kol)):
-                    nextState.append(newStateExcept( state, bidak, ('R', row, Kol) ))
-                else:   # Ada penghalang
-                    break
-
-            # Tahap Berjalan ke Bawah
-            for row in range(Brs, 7):
-                if (isEmpty(state, row, Kol)):
-                    nextState.append(newStateExcept( state, bidak, ('R', row, Kol) ))
-                else:   # Ada penghalang
-                    break
-
-        # KUDA BERJALAN
-        def Kuda(state, bidak):
-        # Mengisi state yang memungkinkan si kuda untuk berjalan ke arah yang dikehendaki
-            Brs = bidak[1]
-            Kol = bidak[2]
-            Gerak1 = [-2, 2]
-            Gerak2 = [-1, 1]
-            for i in range(0, 1):
-                for j in range(0, 1):
-                    Baris = Brs + Gerak1[i]
-                    Kolom = Kol + Gerak2[j]
-                    if (isValid(Baris, Kolom)):
-                        if (isEmpty(state, Baris, Kolom)):
-                            nextState.append(newStateExcept( state, bidak, ('K', Baris, Kolom) ))
-
-        # MENTERI BERJALAN
-        def Menteri(state, bidak):
-        # Mengisi state yang memungkinkan si benteng untuk berjalan ke arah yang dikehendaki
-            Brs = bidak[1]
-            Kol = bidak[2]
-
-            # Tahap Berjalan ke Kanan Bawah
-            for i in range(1, 7):
-                Baris = Brs + i
-                Kolom = Kol + i
-                if (isValid(Baris, Kolom)):
-                    if (isEmpty(state, Baris, Kolom)):
-                        nextState.append(newStateExcept( state, bidak, ('B', Baris, Kolom) ))
-                    else:   # Ada penghalang
-                        break
-                else:       # Di luar jangkauan catur
-                    break
-
-            # Tahap Berjalan ke Kiri Atas
-            for i in range(1, 7):
-                Baris = Brs - i
-                Kolom = Kol - i
-                if (isValid(Baris, Kolom)):
-                    if (isEmpty(state, Baris, Kolom)):
-                        nextState.append(newStateExcept( state, bidak, ('B', Baris, Kolom) ))
-                    else:   # Ada penghalang
-                        break
-                else:       # Di luar jangkauan catur
-                    break
-
-            # Tahap Berjalan ke Kanan Atas
-            for i in range(1, 7):
-                Baris = Brs - i
-                Kolom = Kol + i
-                if (isValid(Baris, Kolom)):
-                    if (isEmpty(state, Baris, Kolom)):
-                        nextState.append(newStateExcept( state, bidak, ('B', Baris, Kolom) ))
-                    else:   # Ada penghalang
-                        break
-                else:       # Di luar jangkauan catur
-                    break
-
-            # Tahap Berjalan ke Kiri Bawah
-            for i in range(1, 7):
-                Baris = Brs + i
-                Kolom = Kol - i
-                if (isValid(Baris, Kolom)):
-                    if (isEmpty(state, Baris, Kolom)):
-                        nextState.append(newStateExcept( state, bidak, ('B', Baris, Kolom) ))
-                    else:   # Ada penghalang
-                        break
-                else:       # Di luar jangkauan catur
-                    break
-
-        # RATU BERJALAN
-        def Ratu(state, bidak):
-        # Mengisi state yang memungkinkan si ratu untuk berjalan ke arah yang dikehendaki
-            Brs = bidak[1]
-            Kol = bidak[2]
-
-            # PERGERAKAN MENYERUPAI "BENTENG"
-            # Tahap Berjalan ke Kiri
-            for col in range(Kol, 0):
-                if (isEmpty(state, Brs, col)):
-                    nextState.append(newStateExcept( state, bidak, ('Q', Brs, col) ))
-                else:   # Ada penghalang, sehingga akhir dari perjalanan
-                    break
-
-            # Tahap Berjalan ke Kanan
-            for col in range(Kol, 7):
-                if (isEmpty(state, Brs, col)):
-                    nextState.append(newStateExcept( state, bidak, ('Q', Brs, col) ))
-                else:   # Ada penghalang
-                    break
-
-            # Tahap Berjalan ke Atas
-            for row in range(Brs, 0):
-                if (isEmpty(state, row, Kol)):
-                    nextState.append(newStateExcept( state, bidak, ('Q', row, Kol) ))
-                else:   # Ada penghalang
-                    break
-
-            # Tahap Berjalan ke Bawah
-            for row in range(Brs, 7):
-                if (isEmpty(state, row, Kol)):
-                    nextState.append(newStateExcept( state, bidak, ('Q', row, Kol) ))
-                else:   # Ada penghalang
-                    break
-
-            # PERGERAKAN MENYERUPAI "MENTERI"
-            # Tahap Berjalan ke Kanan Bawah
-            for i in range(1, 7):
-                Baris = Brs + i
-                Kolom = Kol + i
-                if (isValid(Baris, Kolom)):
-                    if (isEmpty(state, Baris, Kolom)):
-                        nextState.append(newStateExcept( state, bidak, ('Q', Baris, Kolom) ))
-                    else:   # Ada penghalang
-                        break
-                else:       # Di luar jangkauan catur
-                    break
-
-            # Tahap Berjalan ke Kiri Atas
-            for i in range(1, 7):
-                Baris = Brs - i
-                Kolom = Kol - i
-                if (isValid(Baris, Kolom)):
-                    if (isEmpty(state, Baris, Kolom)):
-                        nextState.append(newStateExcept( state, bidak, ('Q', Baris, Kolom) ))
-                    else:   # Ada penghalang
-                        break
-                else:       # Di luar jangkauan catur
-                    break
-
-            # Tahap Berjalan ke Kanan Atas
-            for i in range(1, 7):
-                Baris = Brs - i
-                Kolom = Kol + i
-                if (isValid(Baris, Kolom)):
-                    if (isEmpty(state, Baris, Kolom)):
-                        nextState.append(newStateExcept( state, bidak, ('Q', Baris, Kolom) ))
-                    else:   # Ada penghalang
-                        break
-                else:       # Di luar jangkauan catur
-                    break
-
-            # Tahap Berjalan ke Kiri Bawah
-            for i in range(1, 7):
-                Baris = Brs + i
-                Kolom = Kol - i
-                if (isValid(Baris, Kolom)):
-                    if (isEmpty(state, Baris, Kolom)):
-                        nextState.append(newStateExcept( state, bidak, ('Q', Baris, Kolom) ))
-                    else:   # Ada penghalang
-                        break
-                else:       # Di luar jangkauan catur
-                    break
-
-        # ALGORITME LOKAL
-        for pieces in state:
-            if (pieces[0] == 'R'):      # Memasukkan pergerakan Benteng
-                Benteng(state, pieces)
-            elif (pieces[0] == 'K'):    # Memasukkan pergerakan Kuda
-                Kuda(state, pieces)
-            elif (pieces[0] == 'B'):    # Memasukkan pergerakan Menteri
-                Menteri(state, pieces)
-            elif (pieces[0] == 'Q'):    # Memasukkan pergerakan Ratu
-                Ratu(state, pieces)
-
-        return nextState
-
-    def geneticAlgorithm(self):
+    def geneticAlgorithm(self,batas):
         # solve using geneticAlgorithm
+        # generate population
         population = generatePopulation(self,4)
         done = False
         result = []
         n = 0
-        while not(done):
+        # saat belum optimal dan iterasi belum mencapai batas
+        while not(done) and (n != batas):
             n+=1
+            # pilih 3 parent yang ff nya paling besar
             best3Parents = selectedParent(population)
+            # do crossover
             childs = crossOver(best3Parents,len(self.chessLocator))
+            # mutasi setiap anak
             for child in childs:
                 mutation(child,len(self.chessLocator))
-            # print(childs)
-            # print(len(self.chessLocator))
             population = childs
             for child in childs:
-        		# print(notAttackingPieces(child))
-                if n<30000:
-                    if (notAttackingPieces(child) == countTarget(len(self.chessLocator))):
-                        result = child
-                        done = True
-                        break
-                elif n<40000:
-                    if (notAttackingPieces(child) >= countTarget(len(self.chessLocator))-1):
-                        result = child
-                        done = True
-                        break
-                else:
-                    if (notAttackingPieces(child) >= countTarget(len(self.chessLocator))-2):
-                        result = child
-                        done = True
-                        break
-       	self.setChessBoard(result)
-        print("iterasi : ",n)
+                if (notAttackingPieces(child) == countTarget(len(self.chessLocator))):
+                    result = child
+                    done = True
+                    self.setChessBoard(result)
+                    break
 
 # main
 def main():
@@ -685,19 +675,18 @@ def main():
     if x == 1:
         nyth.randomize()
         nyth.printAttr()
-        print("Nilai Heuristic : " , (countTarget(len(nyth.chessLocator))- notAttackingPieces(nyth.chessLocator)))
         nyth.hillClimbing()
     elif x == 2:
         nyth.randomize()
         nyth.printAttr()
-        print("Nilai Heuristic : " , (countTarget(len(nyth.chessLocator))- notAttackingPieces(nyth.chessLocator)))
         nyth.simulatedAnnealing(10000, 0.9)
     else:
-        nyth.geneticAlgorithm()
+        batas = int(input("Masukkan batas iterasi : "))
+        nyth.geneticAlgorithm(batas)
     # show chessBoard
     print("\nHASIL")
     nyth.printChessBoard()
-    print((countTarget(len(nyth.chessLocator))- notAttackingPieces(nyth.chessLocator)),0)
+    print((countTargetSamePieces(nyth.chessLocator) - notAttackingSamePieces(nyth.chessLocator)),(countTargetDiffPieces(nyth.chessLocator)- notAttackingDiffPieces(nyth.chessLocator)))
 
 if __name__ == '__main__':
     main()
