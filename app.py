@@ -371,30 +371,40 @@ class nything:
 	    # ALGORITME LOKAL
         # 1. Tahap Inisialisasi (penempatan bidak secara acak)
         X = deepcopy(self.chessLocator)
+        Xi = deepcopy(X)
 
         # 2. Tahap Menghitung Nilai Heuristik Pertama dengan nama 'E' berdasarkan slide
-        E = notAttackingPieces(X)
+        E = countTarget(len(X)) - notAttackingPieces(X)
 
         # init change-able suhu
         chanSuhu = suhu
         while (chanSuhu > 1):
             # 3. Tahap Menghitung Jumlah Kemungkinan Pergerakan untuk Seluruh Bidak
-            i = []
-            i += self.matrixOfNextState(X)
-
+        
             # 4. Tahap Menghitung Nilai Heuristik Kedua dengan nama 'Ei' berdasarkan slide
-            NomorAcak = random.randint(0, len(i) - 1)
-            Ei = notAttackingPieces(i[NomorAcak])
-
+            NomorAcak = random.randint(0,len(Xi)-1)
+            hcurrent = 9999
+            for i in range(8):
+                    for j in range(8):
+                        if not(checkBoard(Xi,i,j)):
+                            state = deepcopy(Xi)
+                            state[NomorAcak] = Xi[NomorAcak][0],i,j
+                            if hcurrent > countTarget(len(state)) - notAttackingPieces(state):
+                                hcurrent = countTarget(len(state)) - notAttackingPieces(state)
+                                Xi = deepcopy(state)
+                                self.setChessBoard(Xi)
+            Ei = hcurrent
+            print(X)
+            print(Xi)
             # 5. Membandingkan Nilai Heuristik Satu Sama Lain
             if (E <= Ei):
                 E = Ei
-                X = deepcopy(i[NomorAcak])
+                X = deepcopy(Xi)
             else:   # Menggunakan Peluang Konstan (dapat diganti dengan Boltzmann atau Pengurangan)
                 if (PeluangAcak() < PeluangBoltzmann(E, Ei, chanSuhu)):
-                    X = deepcopy(i[NomorAcak])
+                    X = deepcopy(Xi)
                     E = Ei
-            chanSuhu -= pendinginan
+            chanSuhu *= pendinginan
         self.setChessBoard(X)
         return X
 
@@ -681,7 +691,7 @@ def main():
         nyth.randomize()
         nyth.printAttr()
         print("Nilai Heuristic : " , (countTarget(len(nyth.chessLocator))- notAttackingPieces(nyth.chessLocator)))
-        nyth.simulatedAnnealing(10000, 1)
+        nyth.simulatedAnnealing(10000, 0.9)
     else:
         nyth.geneticAlgorithm()
     # show chessBoard
