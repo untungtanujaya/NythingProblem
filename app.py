@@ -395,6 +395,7 @@ class nything:
                     X = deepcopy(i[NomorAcak])
                     E = Ei
             chanSuhu -= pendinginan
+        self.setChessBoard(X)
         return X
 
     def matrixOfNextState(self, state):
@@ -686,7 +687,7 @@ def main():
     # show chessBoard
     print("\nHASIL")
     nyth.printChessBoard()
-    print("Nilai Heuristic : " , (countTarget(len(nyth.chessLocator))- notAttackingPieces(nyth.chessLocator)))
+    print((countTarget(len(nyth.chessLocator))- notAttackingPieces(nyth.chessLocator)),0)
 
 if __name__ == '__main__':
     main()
