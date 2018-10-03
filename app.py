@@ -640,7 +640,7 @@ class nything:
                 if (PeluangAcak() < PeluangBoltzmann(E, Ei, chanSuhu)):
                     X = deepcopy(Xi)
                     E = Ei
-            chanSuhu *= pendinginan
+            chanSuhu -= pendinginan
         self.setChessBoard(X)
 
     def geneticAlgorithm(self,batas):
@@ -690,7 +690,9 @@ def main():
     elif x == 2:
         nyth.randomize()
         nyth.printAttr()
-        nyth.simulatedAnnealing(10000, 0.9)
+        suhu = int(input("Masukkan Suhu : "))
+        pendingin = float(input("Masukkan pendingin : "))
+        nyth.simulatedAnnealing(suhu, pendingin)
     else:
         batas = int(input("Masukkan batas iterasi : "))
         nyth.geneticAlgorithm(batas)
