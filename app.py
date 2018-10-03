@@ -5,24 +5,30 @@ import random
 from copy import deepcopy
 import math
 
+# cek apakah kuda di x1,y1 menyerang kotak x2,y2
 def checkKnight(x1,y1,x2,y2):
     if ((x2 == x1 + 2) and ((y2 == y1 -1) or (y2 == y1 + 1))) or (x2 == x1 - 2 and ((y2 == y1 - 1) or (y2 == y1 + 1))) or ((y2 == y1 + 2) and ((x2 == x1 -1) or (x2 == x1 + 1))) or ((y2 == y1 - 2) and ((x2 == x1 - 1) or (x2 == x1 + 1))):
     		return True
 
+# cek apakah bishop di x1,y1 menyerang kotak x2,y2
 def checkBishop(x1,y1,x2,y2):
 	if (abs(x2-x1) == abs(y2-y1)):
 		return True
 
+# cek apakah rook di x1,y1 menyerang kotak x2,y2
 def checkRook(x1,y1,x2,y2):
 	if (x1 == x2) or (y1 == y2):
 		return True
 
+# cek apakah queen di x1,y1 menyerang kotak x2,y2
 def checkQueen(x1,y1,x2,y2):
 	return (checkRook(x1,y1,x2,y2) or checkBishop(x1,y1,x2,y2))
 
+#target ff untuk bidak sejumlah n
 def countTarget(n):
         return int((n*(n-1))/2)
 
+#cek apakah koordinat i,j di board ada bidaknya atau tidak
 def checkBoard(states,i,j):
     check = False
     for state in states:
@@ -31,6 +37,7 @@ def checkBoard(states,i,j):
             break
     return check
 
+# fitness function atau heuristik algo
 def notAttackingPieces(chessLocator):
     ff = 0
     for idx,piece in enumerate(chessLocator):
@@ -86,6 +93,7 @@ def notAttackingPieces(chessLocator):
                         ff += 1
     return ff
 
+# generate populasi untuk genetic algorithm
 def generatePopulation(Obj,nParent):
     population = []
     for i in range(nParent):
@@ -93,6 +101,7 @@ def generatePopulation(Obj,nParent):
         population.append(Obj.chessLocator)
     return population
 
+# memilih 3 parent dari populasi yang memiliki ff paling besar
 def selectedParent(population):
     best3Parents = []
     for i in range(3):              #select 3 best Parents
@@ -106,6 +115,7 @@ def selectedParent(population):
 
     return best3Parents
 
+# crossover dengan baris dimana terjadi crossover ditentukan oleh baris mana yang menghasilkan fitness function yang lebih besar
 def crossOver(population, totalPieces):
     child1 = []
     child2 = []
@@ -152,6 +162,7 @@ def crossOver(population, totalPieces):
         child4 = []
     return [child1hasil, child2hasil, child3hasil, child4hasil]
 
+# mutasi 
 def mutation(chessLocator, totalPieces):
     idx = random.randint (0, totalPieces-1)
     while True:
